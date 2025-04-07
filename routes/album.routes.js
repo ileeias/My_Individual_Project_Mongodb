@@ -4,6 +4,7 @@ import { createAlbumValidator } from "../validators/models.validator.js";
 
 const router = express.Router();
 
+router.get("/", AlbumController.getAll);
 router.post("/", createAlbumValidator, AlbumController.create);
 router.patch("/", createAlbumValidator, AlbumController.update);
 router.delete("/", AlbumController.delete);

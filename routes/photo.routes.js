@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", authUser, PhotoController.getAllPhotos); 
 router.get("/public", PhotoController.getPublicPhotos);
-router.get("/:id", authUser, PhotoController.getPostById);
+router.get("/:id", authUser, PhotoController.getPhotoById);
 router.post("/", createMediaValidator, PhotoController.create);
 router.patch("/:id", createMediaValidator, PhotoController.update);
 router.delete("/:id", PhotoController.delete);
