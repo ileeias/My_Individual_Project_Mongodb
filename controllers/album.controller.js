@@ -11,6 +11,7 @@ class AlbumController {
   }
   async getAll(req, res) {
     try {
+      console.log(11111111111111);
       const albums = await Album.find();
       res.json(albums);
     } catch (error) {
