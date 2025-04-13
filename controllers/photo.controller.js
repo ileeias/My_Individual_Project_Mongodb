@@ -1,18 +1,26 @@
 import { Photo } from '../models/Photo.js';
+import { Album } from '../models/Album.js';
 
 class PhotoController {
   async create(req, res) {
+    const { album, url, title, description, isPublic, category } = req.body;
+    const needAlbum = await Album.findOne({ title: album });
+
+    if (!needAlbum) {
+      return res.status(404).json({ error: 'Альбом не найден' });
+    }
+    const newPhoto = new Photo({
+      url,
+      title,
+      description,
+      isPublic,
+      category,
+      album: needAlbum._id,
+    });
     try {
-      const { url, title, description, isPublic, category } = req.body;
-      const newPhoto = new Photo({
-        url,
-        title,
-        description,
-        isPublic,
-        category,
-      });
       const result = await newPhoto.save();
       res.status(201).json(result);
+      console.log(needAlbum);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -54,11 +62,11 @@ class PhotoController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { url, title, description, isPublic, category } = req.body;
+      const { url, title, description, isPublic, category, album } = req.body;
 
       const updatedPhoto = await Photo.findByIdAndUpdate(
         id,
-        { url, title, description, isPublic, category },
+        { url, title, description, isPublic, category, album },
         { new: true }
       );
 

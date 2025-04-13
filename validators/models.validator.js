@@ -34,9 +34,6 @@ const description = body('description')
 const url = body('url')
   .exists()
   .withMessage('поле "url" обязательно!');
-const category = body('category')
-  .exists()
-  .withMessage('поле "category" обязательно!');
 export const createUserValidator = createCustomValidatorMiddleware([
   username,
   email,
@@ -46,7 +43,6 @@ export const createMediaValidator = createCustomValidatorMiddleware([
   url,
   title,
   description,
-  category,
 ]);
 export const createAlbumValidator = createCustomValidatorMiddleware([
   title,

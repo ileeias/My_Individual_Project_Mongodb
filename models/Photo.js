@@ -44,7 +44,6 @@ const photoSchema = new mongoose.Schema({
   },
   category: {
     type: categorySchema,
-    required: true,
   },
 });
 

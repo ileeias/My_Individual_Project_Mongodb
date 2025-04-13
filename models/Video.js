@@ -45,7 +45,6 @@ const videoSchema = new mongoose.Schema({
   },
   category: {
     type: categorySchema,
-    required: true,
   },
 });
 

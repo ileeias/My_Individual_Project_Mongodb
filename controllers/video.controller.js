@@ -1,13 +1,26 @@
-import { Video } from "../models/Video.js";
+import { Video } from '../models/Video.js';
+import { Album } from '../models/Album.js';
 
 class VideoController {
   async create(req, res) {
+    const { album, url, title, description, isPublic, category } = req.body;
+    const needAlbum = await Album.findOne({ title: album });
+
+    if (!needAlbum) {
+      return res.status(404).json({ error: 'Альбом не найден' });
+    }
+    const newVideo = new Video({
+      url,
+      title,
+      description,
+      isPublic,
+      category,
+      album: needAlbum._id,
+    });
     try {
-      // const { url, title, description, isPublic, category } = req.body;
-      // const newVideo = new Video({ url, title, description, isPublic, category });
-      // const result = await newVideo.save();
-      const result = await new Video(req.body).save();
+      const result = await newVideo.save();
       res.status(201).json(result);
+      console.log(needAlbum);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -37,7 +50,7 @@ class VideoController {
       const video = await Video.findById(id);
 
       if (!video) {
-        return res.status(404).json({ error: "Видео не найдено" });
+        return res.status(404).json({ error: 'Видео не найдено' });
       }
 
       res.json(video);
@@ -49,16 +62,16 @@ class VideoController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { url, title, description, isPublic, category } = req.body;
+      const { url, title, description, isPublic, category, album } = req.body;
 
       const updatedVideo = await Video.findByIdAndUpdate(
         id,
-        { url, title, description, isPublic, category },
+        { url, title, description, isPublic, category, album },
         { new: true }
       );
 
       if (!updatedVideo) {
-        return res.status(404).json({ error: "Видео не найдено" });
+        return res.status(404).json({ error: 'Видео не найдено' });
       }
 
       res.json(updatedVideo);
@@ -73,10 +86,10 @@ class VideoController {
       const deletedVideo = await Video.findByIdAndDelete(id);
 
       if (!deletedVideo) {
-        return res.status(404).json({ error: "Видео не найдено" });
+        return res.status(404).json({ error: 'Видео не найдено' });
       }
 
-      res.status(204).json({ message: "Видео было успешно удалено" });
+      res.status(204).json({ message: 'Видео было успешно удалено' });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

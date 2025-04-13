@@ -11,7 +11,6 @@ class AlbumController {
   }
   async getAll(req, res) {
     try {
-      console.log(11111111111111);
       const albums = await Album.find();
       res.json(albums);
     } catch (error) {
@@ -21,10 +20,10 @@ class AlbumController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { title } = req.body;
+      const { title, year } = req.body;
       const result = await Album.findByIdAndUpdate(
         id,
-        { title },
+        { title, year },
         { new: true }
       );
       res.json(result);
