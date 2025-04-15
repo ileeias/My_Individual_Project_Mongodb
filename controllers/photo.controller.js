@@ -47,12 +47,10 @@ class PhotoController {
   async getPhotoById(req, res) {
     try {
       const { id } = req.params;
-      const photo = await Photo.findById(id);
-
+      let photo = await Photo.findById(id);
       if (!photo) {
         return res.status(404).json({ error: 'Фото не найдено' });
       }
-
       res.json(photo);
     } catch (error) {
       res.status(500).json({ error: error.message });
